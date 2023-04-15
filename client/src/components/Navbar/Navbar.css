@@ -1,0 +1,17 @@
+.navbar {
+  display: flex;
+  border: 1px solid #ccc;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.4em;
+}
+
+.logo-block {
+  display: flex;
+  align-items: center;
+}
+
+.brand-typo {
+  font-size: 1.4rem;
+  font-weight: bold;
+}
