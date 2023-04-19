@@ -4,10 +4,6 @@
 
 Project in Action - [Jobify](https://www.jobify.live/)
 
-#### Support
-
-Find the App Useful? [You can always buy me a coffee](https://www.buymeacoffee.com/johnsmilga)
-
 #### Run The App Locally
 
 ```sh
@@ -22,8 +18,10 @@ npm start
 ```
 
 - visit url http://localhost:3000/
+or if project is in codesandbox 
+https://ztolnv-5173.csb.app/
 
-#### Setup React App
+#### Setup React + Vite App
 
 - create <b>client</b> folder
 - open terminal
