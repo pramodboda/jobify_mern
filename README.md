@@ -1639,6 +1639,16 @@ npm install concurrently --save-dev
   },
 ```
 
+- If you are using React + Vite, Setup concurrently like below
+
+```js
+  "scripts": {
+    "server": "nodemon server --ignore client",
+    "client": "npm run dev --prefix client",
+    "start": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\" "
+  },
+```
+
 #### Cors Error
 
 [Cors Error](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS)
@@ -1662,16 +1672,42 @@ app.use(cors());
 #### Proxy
 
 - access from anywhere
-- don't want to use full url
+- don't want to use full of server API url
 
 [cra proxy](https://create-react-app.dev/docs/proxying-api-requests-in-development/)
 
 ```js
 "proxy":"http://localhost:5000"
 ```
-
 - my preference to remove trailing slash /
 - restart app
+
+- If you are using React + Vite
+[vite proxy](https://vitejs.dev/config/server-options.html)
+Step #1: goto vite.config.js file and update the below code
+```js
+export default defineConfig({
+  plugins: [react()],
+  server: {
+    proxy: {
+      // string shorthand: http://localhost:5173/foo -> http://localhost:4567/foo
+      "/api/v1": "https://ztolnv-5000.csb.app/",
+    },
+  },
+});
+```
+Step #2: in server.js update you dummy route
+```js
+app.get("/api/v1", (req, res) => {
+  res.json({ msg: "API" });
+});
+```
+Step #3: Now you can use/ fetch servers API data by just use like ref below code
+```js
+const res = await fetch("/api/v1");
+```
+
+
 
 #### Register User - Setup
 

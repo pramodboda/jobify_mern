@@ -1,40 +1,61 @@
 import { useState, useEffect } from "react";
-import { BrandLogo, FormRow, AlertComp } from "../../components";
+import { BrandLogo, FormRow, AlertComp, LoadingIcon } from "../../components";
 import { Button, Typography, Link } from "@mui/material";
+import LoadingButton from "@mui/lab/LoadingButton";
 import { useAppContext } from "../../context/AppContext";
+import { useNavigate } from "react-router-dom";
+
 import { AuthPageWrapper } from "./Register.styled";
+
+import HowToRegIcon from "@mui/icons-material/HowToReg";
 
 const initialState = {
   name: "",
   email: "",
   password: "",
-  isMember: true
+  isMember: true,
 };
 const Register = () => {
+  const navigate = useNavigate();
   const [values, setValues] = useState(initialState);
 
-  const { isLoading, showAlert, displayAlert } = useAppContext();
+  const { user, isLoading, showAlert, displayAlert, registerUser } =
+    useAppContext();
 
   const ToggleMember = () => {
     setValues({ ...values, isMember: !values.isMember });
   };
   // Global state and useNavigate
   const handleChange = (e) => {
-    console.log(e.target);
+    // console.log(e.target.value);
     setValues({ ...values, [e.target.name]: e.target.value });
   };
 
   const onSubmit = (e) => {
     e.preventDefault();
-    console.log(e.target);
-
+    // console.log(e.target);
+    // console.log(values);
     const { name, email, password, isMember } = values;
     if (!email || !password || (!isMember && !name)) {
       displayAlert();
       return;
     }
-    console.log(values);
+
+    const currentUser = { name, email, password };
+    if (isMember) {
+      console.log("Already a member");
+    } else {
+      registerUser(currentUser);
+    }
   };
+
+  useEffect(() => {
+    if (user) {
+      setTimeout(() => {
+        navigate("/");
+      }, 3000);
+    }
+  }, [user, navigate]);
 
   return (
     <AuthPageWrapper className="auth-page-wrapper">
@@ -51,7 +72,7 @@ const Register = () => {
         {!values.isMember && (
           <FormRow
             type="text"
-            name="username"
+            name="name"
             labelText="User Name"
             value={values.name}
             handleChange={handleChange}
@@ -75,9 +96,21 @@ const Register = () => {
           handleChange={handleChange}
         />
 
-        <Button onClick={onSubmit} variant="contained">
-          Sumbit
-        </Button>
+        {/* <Button onClick={onSubmit} variant="contained">
+          <span>Sumbit</span>
+          {isLoading && <LoadingIcon />}
+        </Button> */}
+
+        <LoadingButton
+          onClick={onSubmit}
+          endIcon={<HowToRegIcon />}
+          loading={isLoading}
+          loadingPosition="end"
+          variant="contained"
+        >
+          <span>Sumbit</span>
+        </LoadingButton>
+
         {values.isMember ? "Not a member yet? " : "Already a member? "}
 
         <Link variant="outlined" onClick={ToggleMember}>
